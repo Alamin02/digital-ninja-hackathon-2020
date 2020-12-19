@@ -12,6 +12,10 @@ export const createBookingContoller = async (req: express.Request, res: express.
 
   const { room_number, arrival, checkout, customer_id, book_type } = req.body;
 
+  if (new Date(checkout).getTime() - new Date(arrival).getTime() < 0) {
+    return res.status(400).json({ errors: [{ msg: "Checkout can't be earlier than arrival" }] });
+  }
+
   const roomRepo = getConnection().getRepository(Room);
   const room = await roomRepo.findOne({ room_number });
 

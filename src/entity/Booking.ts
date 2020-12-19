@@ -39,6 +39,7 @@ export class Booking {
   book_time: string;
 
   protected total_paid_amount: number;
+  protected total_bill: number;
   protected customer_name: string;
   protected room_number: string;
 
@@ -66,6 +67,15 @@ export class Booking {
   getRoomNumber() {
     if (this.room) {
       this.room_number = this.room.room_number;
+    }
+  }
+
+  @AfterLoad()
+  calculateTotalPayable() {
+    if (this.room) {
+      const diff = new Date(this.checkout).getTime() - new Date(this.arrival).getTime();
+      const totalDays = Math.ceil(diff/ (24 * 3600* 1000)) + 1;
+      this.total_bill = this.room.price * totalDays;
     }
   }
 }
