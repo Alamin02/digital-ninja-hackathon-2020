@@ -10,33 +10,19 @@ import { User } from "../entity/User";
 const LocalStrategy = passportLocal.Strategy;
 const saltRounds = 10;
 
-createConnection({
-  type: "sqlite",
-  database: "./db.sqlite",
-  entities: [User],
-  synchronize: true
-});
-
 passport.use(new LocalStrategy((username, password, done) => {
 }))
-const connection = getConnection();
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
-  const connection = await createConnection({
-    type: "sqlite",
-    database: "./db.sqlite",
-    entities: [User],
-    synchronize: true
-  });
-
+  const userRepositorty = getConnection().getRepository(User);
   const user = new User();
 
   user.name = 'John';
   user.email = 'john@gp.co';
   user.password = 'something%^%$%$';
 
-  const newUser = await connection.manager.save(user);
+  const newUser = await userRepositorty.save(user);
   
   res.json({ user: newUser });
 });

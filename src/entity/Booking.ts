@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm";
 
 @Entity('bookings')
-export class Customers {
+export class Booking {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -21,7 +21,7 @@ export class Customers {
     @Column()
     book_type: string;
 
-    @CreateDateColumn({type: "timestamp"})
+    @CreateDateColumn({type: "datetime"})
     book_time: string;
 
 }
