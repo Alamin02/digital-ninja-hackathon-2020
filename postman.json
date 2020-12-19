@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "e845a6f2-fc74-4ee3-80b8-6654ba6b18e7",
+		"name": "postman-booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "John Doe",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "john@gp.co",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "as675675",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "john@gp.co",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "as675675",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5AZ3AuY28iLCJpYXQiOjE2MDgzNzM1MTksImV4cCI6MTYwODM3NzExOX0.q5gKD1z-d3DJJzcngDzG0iTFV8epgfKLKXXfcuibhcg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "first_name",
+							"value": "Jaime",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Hudston",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "Jaime@me.co",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"customer"
+					]
+				},
+				"description": "Needs Authentication"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Room",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5AZ3AuY28iLCJpYXQiOjE2MDgzNzc2NTEsImV4cCI6MTYwODM4MTI1MX0.BAoF-IkNrpDKZx4SuH39es2ExaO1gWF10SbEuTnViW0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "room_number",
+							"value": "101",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "500",
+							"type": "text"
+						},
+						{
+							"key": "max_persons",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "room_type",
+							"value": "Large",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a room",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5AZ3AuY28iLCJpYXQiOjE2MDgzNzc2NTEsImV4cCI6MTYwODM4MTI1MX0.BAoF-IkNrpDKZx4SuH39es2ExaO1gWF10SbEuTnViW0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "room_number",
+							"value": "101",
+							"type": "text"
+						},
+						{
+							"key": "arrival",
+							"value": "1/4/2022",
+							"type": "text"
+						},
+						{
+							"key": "checkout",
+							"value": "2/4/2022",
+							"type": "text"
+						},
+						{
+							"key": "customer_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "book_type",
+							"value": "Normal",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/booking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Booking",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5AZ3AuY28iLCJpYXQiOjE2MDgzNzM1MTksImV4cCI6MTYwODM3NzExOX0.q5gKD1z-d3DJJzcngDzG0iTFV8epgfKLKXXfcuibhcg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/booking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Payment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5AZ3AuY28iLCJpYXQiOjE2MDgzNzM1MTksImV4cCI6MTYwODM3NzExOX0.q5gKD1z-d3DJJzcngDzG0iTFV8epgfKLKXXfcuibhcg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "customer_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "booking_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "100",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"payment"
+					],
+					"query": [
+						{
+							"key": "customer_id",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "booking_id",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "100",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
