@@ -60,6 +60,40 @@ router.post(
   createCustomerController
 );
 
+/**
+ * @swagger
+ *
+ * /api/v1/room:
+ *   post:
+ *     produces:
+ *       - application/json
+ *     components:
+ *       securitySchemes:
+ *          BearerAuth:
+ *            type: http
+ *            scheme: bearer
+ *     security:
+ *         - basicAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               room_number:
+ *                 type: string
+ *               price:
+ *                 type: integer
+ *               max_persons:
+ *                 type: integer
+ *               room_type:
+ *                 type: string
+ *           example: {"room_number":"101", "price":"100", "max_persons":"10", "room_type":"large"}
+ *     responses:
+ *         200:
+ *            description: OK
+ */
 router.post(
   "/room",
   authenticateToken,
@@ -92,6 +126,43 @@ router.post(
   createRoomContoller
 );
 
+
+/**
+ * @swagger
+ *
+ * /api/v1/booking:
+ *   post:
+ *     produces:
+ *       - application/json
+ *     components:
+ *       securitySchemes:
+ *          BearerAuth:
+ *            type: http
+ *            scheme: bearer
+ *     security:
+ *         - basicAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               room_number:
+ *                 type: string
+ *               arrival:
+ *                 type: date
+ *               checkout:
+ *                 type: date
+ *               customer_id:
+ *                 type: integer
+ *               book_type:
+ *                 type: string
+ *           example: {"room_number":"101", "arrival":"1/2/2020", "checkout":"1/2/2020", "customer_id":"1", "book_type": "express"}
+ *     responses:
+ *         200:
+ *            description: OK
+ */
 router.post(
   "/booking",
   authenticateToken,
@@ -101,10 +172,6 @@ router.post(
       .isEmpty()
       .withMessage("Room number must not be empty"),
     body("arrival").not().isEmpty().withMessage("Arrival must not be empty"),
-    body("max_persons")
-      .not()
-      .isEmpty()
-      .withMessage("Maximum number of persons must not be empty"),
     body("checkout")
       .not()
       .isEmpty()
@@ -123,8 +190,55 @@ router.post(
   createBookingContoller
 );
 
+/**
+ * @swagger
+ *
+ * /api/v1/booking:
+ *  get:
+ *     description: List of bookings
+ *     produces:
+ *       - application/json
+ *     responses:
+ *        200:
+ *          description: users
+ *          schema:
+ *            type: array
+ */
 router.get("/booking", authenticateToken, listBookingController);
 
+
+/**
+ * @swagger
+ *
+ * /api/v1/booking:
+ *   post:
+ *     produces:
+ *       - application/json
+ *     components:
+ *       securitySchemes:
+ *          BearerAuth:
+ *            type: http
+ *            scheme: bearer
+ *     security:
+ *         - basicAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customer_id:
+ *                 type: integer
+ *               booking_id:
+ *                 type: integer
+ *               amount:
+ *                 type: integer
+ *           example: {"customer_id":"1", "booking_id": "1", "amount": 100}
+ *     responses:
+ *         200:
+ *            description: OK
+ */
 router.post(
   "/payment",
   authenticateToken,
