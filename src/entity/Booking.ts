@@ -39,7 +39,7 @@ export class Booking {
   book_time: string;
 
   protected total_paid_amount: number;
-  protected total_bill: number;
+  total_bill: number;
   protected customer_name: string;
   protected room_number: string;
 

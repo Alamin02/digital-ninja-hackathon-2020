@@ -1,10 +1,13 @@
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
-import express = require('express');
+import express = require("express");
 
 import { Payment, Booking, Customer } from "../entity";
 
-export const createPaymentController = async (req: express.Request, res: express.Response) => {
+export const createPaymentController = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -21,10 +24,26 @@ export const createPaymentController = async (req: express.Request, res: express
   }
 
   const bookingRepo = getConnection().getRepository(Booking);
-  const booking = await bookingRepo.findOne({ id: booking_id });
+  const booking = await bookingRepo.findOne({
+    where: { id: booking_id },
+    relations: ['room'],
+  });
 
   if (!booking) {
     return res.status(400).json({ errors: [{ msg: "Booking ID invalid" }] });
+  }
+
+  const paymentRepo = getConnection().getRepository(Payment);
+
+  const previousPayments = await paymentRepo.find({ booking });
+
+  let totalPayment = 0;
+  previousPayments.forEach((payment) => {
+    totalPayment += payment.amount;
+  });
+
+  if (totalPayment > booking.total_bill) {
+    return res.status(400).json({ errors: [{ msg: `Payment exceeds total bill by ${totalPayment - booking.total_bill}` }] })
   }
 
   const newPayment = new Payment();
@@ -33,7 +52,6 @@ export const createPaymentController = async (req: express.Request, res: express
   newPayment.booking = booking;
   newPayment.amount = parseFloat(amount);
 
-  const paymentRepo = getConnection().getRepository(Payment);
   const newCreatedPayment = await paymentRepo.save(newPayment);
 
   res.json({ payment: newCreatedPayment });
