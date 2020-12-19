@@ -2,6 +2,8 @@ import express = require("express");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
 import { createConnection } from "typeorm";
+const debug = require('debug')('app')
+
 require('dotenv').config()
 
 import indexRouter from "./routes/index";
@@ -41,5 +43,5 @@ app.use(function (err, req, res, next) {
 const port = 3000;
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  debug(`Booking Management app listening at http://localhost:${port}`);
 });
