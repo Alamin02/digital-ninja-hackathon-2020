@@ -45,7 +45,7 @@ const swaggerOptions = {
 const swaggerSpecification = swaggerJsdoc(swaggerOptions);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecification));
 
-app.use(function (err, req, res, next) {
+app.use(function (err: any, req: express.Request, res: express.Response, next: Function) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -53,8 +53,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
 
-  //TODO: send JSON
-  res.render("error");
+  res.send('Error');
 });
 
 const port = 3000;
