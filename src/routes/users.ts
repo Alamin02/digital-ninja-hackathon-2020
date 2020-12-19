@@ -7,6 +7,38 @@ import {
   loginController,
 } from "../controllers/AuthContoller";
 
+/**
+ * @swagger
+ *
+ * /api/v1/users/register:
+ *   post:
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *           example: {"name": "alamin","email": "alamin@me.com","password": "asdasdas"}
+ *     responses:
+ *         200:
+ *            description: OK
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  msg:
+ *                     type: integer
+ *                     description: Success message
+ */
+
 router.post(
   "/register",
   [
@@ -16,6 +48,36 @@ router.post(
   ],
   registrationController
 );
+
+/**
+ * @swagger
+ *
+ * /api/v1/users/login:
+ *   post:
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *           example: {"alamin@me.com","password": "asdasdas"}
+ *     responses:
+ *         200:
+ *            description: OK
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  token:
+ *                     type: integer
+ *                     description: JWT token for authentication
+ */
 
 router.post(
   "/login",

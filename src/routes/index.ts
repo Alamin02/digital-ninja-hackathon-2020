@@ -12,6 +12,40 @@ import { createPaymentController } from "../controllers/PaymentContoller";
 
 import { authenticateToken } from "../middlewares/Auth";
 
+/**
+ * @swagger
+ *
+ * /api/v1/customer:
+ *   post:
+ *     produces:
+ *       - application/json
+ *     components:
+ *       securitySchemes:
+ *          BearerAuth:
+ *            type: http
+ *            scheme: bearer
+ *     security:
+ *         - basicAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               first_name:
+ *                 type: string
+ *               last_name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *           example: {"first_name":"John", "last_name":"Doe", "email":"john@gp.co", "phone":"123456"}
+ *     responses:
+ *         200:
+ *            description: OK
+ */
 router.post(
   "/customer",
   authenticateToken,

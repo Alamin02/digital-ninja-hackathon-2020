@@ -1,8 +1,10 @@
 import { getConnection } from "typeorm";
-import { Payment, Booking, Customer } from "../entity";
 import { validationResult } from "express-validator";
+import express = require('express');
 
-export const createPaymentController = async (req, res) => {
+import { Payment, Booking, Customer } from "../entity";
+
+export const createPaymentController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

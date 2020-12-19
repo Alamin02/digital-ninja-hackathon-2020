@@ -3,11 +3,12 @@ import { User } from "../entity";
 import bcrypt = require("bcrypt");
 import jwt = require("jsonwebtoken");
 import { validationResult } from "express-validator";
+import express = require('express');
 
 const secret = process.env.JWT_SECRET;
 const saltRounds = 10;
 
-export const registrationController = async (req, res) => {
+export const registrationController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -33,10 +34,10 @@ export const registrationController = async (req, res) => {
 
   await userRepositorty.save(newUser);
 
-  res.json({ user: "Succesfully created user" });
+  res.json({ msg: "Succesfully created user" });
 };
 
-export const loginController = async (req, res) => {
+export const loginController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

@@ -1,8 +1,9 @@
 import { getConnection } from "typeorm";
 import { Room, Booking, Customer } from "../entity";
 import { validationResult } from "express-validator";
+import express = require('express');
 
-export const createBookingContoller = async (req, res) => {
+export const createBookingContoller = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -57,7 +58,7 @@ export const createBookingContoller = async (req, res) => {
   res.json({ booking: newCreatedBooking });
 };
 
-export const listBookingController = async (req, res) => {
+export const listBookingController = async (req: express.Request, res: express.Response) => {
   const bookingRepo = getConnection().getRepository(Booking);
   const bookingList = await bookingRepo.find({
     relations: ["customer", "room", "payments"],

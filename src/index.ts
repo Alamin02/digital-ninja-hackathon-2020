@@ -1,6 +1,8 @@
 import express = require("express");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
+import swaggerUI = require("swagger-ui-express");
+import swaggerJsdoc = require("swagger-jsdoc");
 import { createConnection } from "typeorm";
 const debug = require('debug')('app')
 
@@ -27,6 +29,21 @@ createConnection({
   entities: [User, Booking, Payment, Customer, Room],
   synchronize: true,
 });
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Booking management API",
+      version: "1.0.0",
+    },
+    server: ["http://localhost:3000/api/v1"]
+  },
+  apis: ["./src/routes/*.ts"],
+};
+
+const swaggerSpecification = swaggerJsdoc(swaggerOptions);
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecification));
 
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

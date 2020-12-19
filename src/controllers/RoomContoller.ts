@@ -1,9 +1,10 @@
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+import express = require('express');
 
 import { Room } from "../entity";
 
-export const createRoomContoller = async (req, res) => {
+export const createRoomContoller = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
