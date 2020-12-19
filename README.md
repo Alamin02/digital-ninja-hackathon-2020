@@ -22,3 +22,13 @@
 ### Swagger
 
 - Swagger documentation can be found at `/docs` endpoint, however this is not fully completed
+
+
+### Workflow
+
+- POST `/api/v1/users/register` endpoint register an agent user
+- POST `/api/v1/users/login` endpoint returns a bearer token
+- POST `/api/v1//room` endpoint creates new rooms
+- POST `/api/v1//booking` endpoint creates a new booking record
+- GET `/api/v1//booking` lists all bookings (pagination not implemented)
+- POST `/api/v1//payment` creates a payment record for a booking
