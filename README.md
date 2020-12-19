@@ -2,8 +2,8 @@
 
 ### Dependencies:
 
-- NodeJS 12+
-- Yarn package manager
+- NodeJS v12+
+- Yarn v1.22.5
 
 ### How to run:
 
