@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToMany,
+  AfterLoad,
 } from "typeorm";
 
 import { Customer } from "./Customer";
@@ -36,4 +37,35 @@ export class Booking {
 
   @CreateDateColumn({ type: "datetime" })
   book_time: string;
+
+  protected total_paid_amount: number;
+  protected customer_name: string;
+  protected room_number: string;
+
+  @AfterLoad()
+  getTotalPaidAmount() {
+    if (this.payments) {
+      let total: number = 0;
+
+      this.payments.forEach((payment) => {
+        total += payment.amount;
+      });
+
+      this.total_paid_amount = total;
+    }
+  }
+
+  @AfterLoad()
+  getCustomerName() {
+    if (this.customer) {
+      this.customer_name = `${this.customer.first_name} ${this.customer.last_name}`;
+    }
+  }
+
+  @AfterLoad()
+  getRoomNumber() {
+    if (this.room) {
+      this.room_number = this.room.room_number;
+    }
+  }
 }
