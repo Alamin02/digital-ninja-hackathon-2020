@@ -1,15 +1,24 @@
 import { getConnection } from "typeorm";
+import { validationResult } from "express-validator";
 
 import { Room } from "../entity";
 
 export const createRoomContoller = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { room_number, price, max_persons, room_type } = req.body;
 
   const roomRepo = getConnection().getRepository(Room);
   const previouRoomEntry = await roomRepo.findOne({ room_number });
 
   if (previouRoomEntry) {
-    return res.json({ error: "Room already created with this name" });
+    return res.json({
+      errors: [{ msg: "Room already created with this name" }],
+    });
   }
 
   const newRoom = new Room();
