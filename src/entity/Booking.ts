@@ -1,27 +1,31 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne
+} from "typeorm";
 
-@Entity('bookings')
+@Entity("bookings")
 export class Booking {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  room_number: string;
 
-    @Column()
-    room_number: string;
+  @Column("datetime")
+  arrival: string;
 
-    @Column('datetime')
-    arrival: string;
+  @Column("datetime")
+  checkout: string;
 
-    @Column('datetime')
-    checkout: string;
+  @Column()
+  customer_id: number;
 
-    @Column()
-    customer_id: number;
+  @Column()
+  book_type: string;
 
-    @Column()
-    book_type: string;
-
-    @CreateDateColumn({type: "datetime"})
-    book_time: string;
-
+  @CreateDateColumn({ type: "datetime" })
+  book_time: string;
 }

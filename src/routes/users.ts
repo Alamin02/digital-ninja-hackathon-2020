@@ -1,44 +1,41 @@
 import express = require("express");
 const router = express.Router();
-import bcrypt = require('bcrypt');
+import bcrypt = require("bcrypt");
+import jwt = require("jsonwebtoken");
 
-import passport = require('passport');
-import passportLocal = require('passport-local');
-import { createConnection, getConnection } from "typeorm";
+import { getConnection } from "typeorm";
 
-import { User } from "../entity/User";
-const LocalStrategy = passportLocal.Strategy;
+import { User } from "../entity";
 const saltRounds = 10;
+const secret = "XXYYZZ";
 
-passport.use(new LocalStrategy((username, password, done) => {
-}))
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, secret, (err: any, user: any) => {
+    console.log(err);
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
 
 /* GET users listing. */
-router.get("/", async function (req, res, next) {
-  const userRepositorty = getConnection().getRepository(User);
-  const user = new User();
-
-  user.name = 'John';
-  user.email = 'john@gp.co';
-  user.password = 'something%^%$%$';
-
-  const newUser = await userRepositorty.save(user);
-  
-  res.json({ user: newUser });
+router.get("/", authenticateToken, async function (req, res, next) {
+  res.json({ user: "Authenticated" });
 });
 
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
-  console.log({ name, email, password });
-
   const hash = await bcrypt.hash(password, saltRounds);
-
   const userRepositorty = getConnection().getRepository(User);
-  const previousEntry = await userRepositorty.findOne({ email })
+  const previousEntry = await userRepositorty.findOne({ email });
 
   if (previousEntry) {
-    res.send({ error: 'User with this email already exists' })
+    res.send({ error: "User with this email already exists" });
     return;
   }
 
@@ -50,7 +47,30 @@ router.post('/register', async (req, res) => {
 
   const newCreateUser = await userRepositorty.save(newUser);
 
-  res.json({ user: newCreateUser })
-})
+  res.json({ user: newCreateUser });
+});
+
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const userRepositorty = getConnection().getRepository(User);
+  const previousEntry = await userRepositorty.findOne({ email });
+
+  if (!previousEntry) {
+    res.send({ error: "Email or password doesnot match" });
+    return;
+  }
+
+  const isPasswordMatch = bcrypt.compareSync(password, previousEntry.password);
+
+  if (!isPasswordMatch) {
+    res.send({ error: "Email or password doesnot match" });
+    return;
+  }
+
+  const token = jwt.sign(email, secret, { expiresIn: "1h" });
+
+  res.json({ token });
+});
 
 export default router;

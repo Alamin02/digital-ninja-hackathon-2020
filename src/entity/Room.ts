@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert} from "typeorm";
 
 @Entity('rooms')
 export class Room {
@@ -20,5 +20,10 @@ export class Room {
 
     @Column()
     room_type: string;
+
+    @BeforeInsert()
+    beforeInsertActions() {
+        this.locked = false;
+    }
 
 }
