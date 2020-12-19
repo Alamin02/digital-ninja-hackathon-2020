@@ -1,0 +1,36 @@
+{
+   "name": "gp-hackathon",
+   "version": "0.0.0",
+   "private": true,
+   "scripts": {
+      "start": "ts-node-dev src/index.ts"
+   },
+   "dependencies": {
+      "@types/bcrypt": "^3.0.0",
+      "@types/cookie-parser": "^1.4.2",
+      "@types/express": "^4.17.9",
+      "@types/http-errors": "^1.8.0",
+      "@types/passport-local": "^1.0.33",
+      "bcrypt": "^5.0.0",
+      "body-parser": "^1.19.0",
+      "cookie-parser": "~1.4.4",
+      "debug": "~2.6.9",
+      "esm": "^3.2.25",
+      "express": "~4.16.1",
+      "http-errors": "~1.6.3",
+      "jade": "~1.11.0",
+      "morgan": "~1.9.1",
+      "mysql": "^2.14.1",
+      "passport": "^0.4.1",
+      "passport-local": "^1.0.0",
+      "reflect-metadata": "^0.1.10",
+      "sqlite3": "^5.0.0",
+      "ts-node-dev": "^1.1.1",
+      "typeorm": "0.2.29"
+   },
+   "devDependencies": {
+      "@types/node": "^8.0.29",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   }
+}
