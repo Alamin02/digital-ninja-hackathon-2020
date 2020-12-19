@@ -21,7 +21,7 @@ export const registrationController = async (req, res) => {
   const previousEntry = await userRepositorty.findOne({ email });
 
   if (previousEntry) {
-    return res.json({
+    return res.status(400).json({
       errors: [{ msg: "User with this email already exists" }],
     });
   }
@@ -49,13 +49,17 @@ export const loginController = async (req, res) => {
   const previousEntry = await userRepositorty.findOne({ email });
 
   if (!previousEntry) {
-    return res.json({ errors: [{ msg: "Email or password doesnot match" }] });
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Email or password doesnot match" }] });
   }
 
   const isPasswordMatch = bcrypt.compareSync(password, previousEntry.password);
 
   if (!isPasswordMatch) {
-    return res.json({ errors: [{ msg: "Email or password doesnot match" }] });
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Email or password doesnot match" }] });
   }
 
   const token = jwt.sign({ email }, secret, { expiresIn: "1h" });

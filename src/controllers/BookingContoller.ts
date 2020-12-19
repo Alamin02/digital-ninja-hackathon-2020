@@ -15,7 +15,7 @@ export const createBookingContoller = async (req, res) => {
   const room = await roomRepo.findOne({ room_number });
 
   if (!room) {
-    return res.json({ errors: [{ msg: "Room number invalid" }] });
+    return res.status(400).json({ errors: [{ msg: "Room number invalid" }] });
   }
 
   const bookingRepo = getConnection().getRepository(Booking);
@@ -33,14 +33,16 @@ export const createBookingContoller = async (req, res) => {
     .getOne();
 
   if (previousBooking) {
-    return res.json({ errors: [{ msg: "Room already booked at that time" }] });
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Room already booked at that time" }] });
   }
 
   const customerRepo = getConnection().getRepository(Customer);
   const customer = await customerRepo.findOne({ id: customer_id });
 
   if (!customer) {
-    return res.json({ errors: [{ msg: "Customer ID invalid" }] });
+    return res.status(400).json({ errors: [{ msg: "Customer ID invalid" }] });
   }
 
   const newBooking = new Booking();

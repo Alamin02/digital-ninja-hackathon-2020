@@ -15,14 +15,14 @@ export const createPaymentController = async (req, res) => {
   const customer = await customerRepo.findOne({ id: customer_id });
 
   if (!customer) {
-    return res.json({ errors: [{ msg: "Customer ID invalid" }] });
+    return res.status(400).json({ errors: [{ msg: "Customer ID invalid" }] });
   }
 
   const bookingRepo = getConnection().getRepository(Booking);
   const booking = await bookingRepo.findOne({ id: booking_id });
 
   if (!booking) {
-    return res.json({ errors: [{ msg: "Booking ID invalid" }] });
+    return res.status(400).json({ errors: [{ msg: "Booking ID invalid" }] });
   }
 
   const newPayment = new Payment();
