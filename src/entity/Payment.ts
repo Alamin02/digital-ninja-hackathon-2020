@@ -2,7 +2,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  CreateDateColumn
 } from "typeorm";
 
 import { Booking } from './Booking';
@@ -13,9 +14,6 @@ export class Payment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  booking_id: number;
-
   @ManyToOne(() => Customer, customer => customer.payments)
   customer: Customer;
 
@@ -25,6 +23,6 @@ export class Payment {
   @Column()
   amount: number;
 
-  @Column("datetime")
-  date: string;
+  @CreateDateColumn({ type: "datetime" })
+  payment_time: string;
 }

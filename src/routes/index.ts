@@ -1,12 +1,8 @@
 import express = require("express");
-
 const router = express.Router();
-
-import { Between } from "typeorm";
-
 import { getConnection } from "typeorm";
 
-import { Customer, Room, Booking } from "../entity";
+import { Customer, Room, Booking, Payment } from "../entity";
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -35,8 +31,13 @@ router.post("/create-room", async (req, res) => {
 
   const roomRepo = getConnection().getRepository(Room);
 
-  const newRoom = new Room();
+  const previouRoomEntry = await roomRepo.findOne({ room_number });
 
+  if (previouRoomEntry) {
+    return res.json({ error: "Room already created with this name" });
+  }
+
+  const newRoom = new Room();
   newRoom.room_number = room_number;
   newRoom.price = price;
   newRoom.max_persons = max_persons;
@@ -50,11 +51,18 @@ router.post("/create-room", async (req, res) => {
 router.post("/book-room", async (req, res) => {
   const { room_number, arrival, checkout, customer_id, book_type } = req.body;
 
+  const roomRepo = getConnection().getRepository(Room);
+  const room = await roomRepo.findOne({ room_number });
+
+  if (!room) {
+    return res.json({ error: "Room number invalid" });
+  }
+
   const bookingRepo = getConnection().getRepository(Booking);
 
   const previousBooking = await bookingRepo
     .createQueryBuilder("bookings")
-    .where("bookings.room_number = :room_number", { room_number })
+    .where("bookings.room = :room_id", { room_id: room.id })
     .andWhere(
       "((bookings.arrival BETWEEN :arrival AND :checkout) OR (bookings.checkout BETWEEN :arrival AND :checkout))",
       {
@@ -65,21 +73,67 @@ router.post("/book-room", async (req, res) => {
     .getOne();
 
   if (previousBooking) {
-    res.json({ error: "Room already booked at that time" });
-    return;
+    return res.json({ error: "Room already booked at that time" });
+  }
+
+  const customerRepo = getConnection().getRepository(Customer);
+  const customer = await customerRepo.findOne({ id: customer_id });
+
+  if (!customer) {
+    return res.json({ error: "Customer ID invalid" });
   }
 
   const newBooking = new Booking();
 
-  newBooking.room_number = room_number;
+  newBooking.room = room;
   newBooking.arrival = new Date(arrival).toISOString();
   newBooking.checkout = new Date(checkout).toISOString();
-  newBooking.customer_id = customer_id;
+  newBooking.customer = customer;
   newBooking.book_type = book_type;
 
   const newCreatedBooking = await bookingRepo.save(newBooking);
 
   res.json({ booking: newCreatedBooking });
+});
+
+router.get("/bookings", async (req, res) => {
+  const bookingRepo = getConnection().getRepository(Booking);
+  const bookingList = await bookingRepo.find({
+    relations: ["customer", "room", "payments"],
+  });
+
+  res.json({ list: bookingList });
+});
+
+router.post("/payment", async (req, res) => {
+  const { customer_id, booking_id, amount } = req.body;
+
+  const customerRepo = getConnection().getRepository(Customer);
+  const customer = await customerRepo.findOne({ id: customer_id });
+
+  console.log(customer, customer_id);
+
+  if (!customer) {
+    return res.json({ error: "Customer ID invalid" });
+  }
+
+  const bookingRepo = getConnection().getRepository(Booking);
+  const booking = await bookingRepo.findOne({ id: booking_id });
+
+  if (!booking) {
+    return res.json({ error: "Booking ID invalid" });
+  }
+
+  const newPayment = new Payment();
+
+  newPayment.customer = customer;
+  newPayment.booking = booking;
+  newPayment.amount = parseFloat(amount);
+
+  const paymentRepo = getConnection().getRepository(Payment);
+  const newCreatedPayment = await paymentRepo.save(newPayment);
+
+  res.json({ payment: newCreatedPayment });
 });
 
 export default router;
