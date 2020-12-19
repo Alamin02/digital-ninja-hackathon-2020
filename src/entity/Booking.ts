@@ -3,16 +3,21 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  OneToMany,
 } from "typeorm";
+
+import { Customer } from "./Customer";
+import { Payment } from "./Payment";
+import { Room } from "./Room";
 
 @Entity("bookings")
 export class Booking {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  room_number: string;
+  @ManyToOne(() => Room, (room) => room.bookings)
+  room: Room;
 
   @Column("datetime")
   arrival: string;
@@ -20,8 +25,11 @@ export class Booking {
   @Column("datetime")
   checkout: string;
 
-  @Column()
-  customer_id: number;
+  @ManyToOne(() => Customer, (customer) => customer.bookings)
+  customer: Customer;
+
+  @OneToMany(() => Payment, (Payment) => Payment.booking)
+  payments: Payment[];
 
   @Column()
   book_type: string;

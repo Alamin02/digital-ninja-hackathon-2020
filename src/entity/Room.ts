@@ -1,29 +1,24 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
-@Entity('rooms')
+import { Booking } from "./Booking";
+
+@Entity("rooms")
 export class Room {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  room_number: string;
 
-    @Column()
-    room_number: string;
+  @Column()
+  price: string;
 
-    @Column()
-    price: string;
+  @Column()
+  max_persons: number;
 
-    @Column()
-    locked: boolean;
+  @OneToMany(() => Booking, (booking) => booking.room)
+  bookings: Booking[];
 
-    @Column()
-    max_persons: number;
-
-    @Column()
-    room_type: string;
-
-    @BeforeInsert()
-    beforeInsertActions() {
-        this.locked = false;
-    }
-
+  @Column()
+  room_type: string;
 }
