@@ -2,6 +2,7 @@ import express = require("express");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
 import { createConnection } from "typeorm";
+require('dotenv').config()
 
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
@@ -15,8 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/api/v1", indexRouter);
+app.use("/api/v1/users", usersRouter);
 
 createConnection({
   type: "sqlite",

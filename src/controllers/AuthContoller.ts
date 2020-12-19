@@ -2,7 +2,7 @@ import { getConnection } from "typeorm";
 import { User } from "../entity";
 import bcrypt = require("bcrypt");
 import jwt = require("jsonwebtoken");
-const secret = "XXYYZZ";
+const secret = process.env.JWT_SECRET;
 
 const saltRounds = 10;
 

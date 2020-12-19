@@ -2,7 +2,13 @@ import { getConnection } from "typeorm";
 import { Room, Booking, Customer } from "../entity";
 
 export const createBookingContoller = async (req, res) => {
-  const { room_number, arrival, checkout, customer_id, book_type } = req.body;
+  const {
+    room_number,
+    arrival,
+    checkout,
+    customer_id,
+    book_type,
+  } = req.body;
 
   const roomRepo = getConnection().getRepository(Room);
   const room = await roomRepo.findOne({ room_number });
